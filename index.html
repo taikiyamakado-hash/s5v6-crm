@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>顧客管理 CRM</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-white text-gray-900 h-screen flex flex-col">
+
+  <!-- ヘッダー・タブ -->
+  <header class="border-b border-gray-200 px-6 py-3 flex items-center gap-6 shrink-0">
+    <h1 class="text-lg font-bold text-gray-900">顧客管理</h1>
+    <nav class="flex gap-1">
+      <button id="tab-customers"
+        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        data-view="customers">
+        👥 顧客
+      </button>
+      <button id="tab-pipeline"
+        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        data-view="pipeline">
+        📊 パイプライン
+      </button>
+    </nav>
+  </header>
+
+  <!-- メインエリア -->
+  <main class="flex-1 overflow-hidden">
+
+    <!-- ビュー①: 顧客（ツーカラム） -->
+    <div id="view-customers" class="flex h-full">
+
+      <!-- 左ペイン: 顧客リスト (340px固定) -->
+      <aside class="w-[340px] shrink-0 border-r border-gray-200 flex flex-col h-full">
+        <!-- 検索 + 新規ボタン -->
+        <div class="p-4 border-b border-gray-100 shrink-0">
+          <div class="flex gap-2 mb-3">
+            <input
+              id="input-search"
+              type="text"
+              placeholder="会社名・担当者・役職で検索"
+              class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
+            />
+          </div>
+          <button
+            id="btn-new-customer"
+            class="btn-primary w-full rounded-lg px-4 py-2 text-sm font-medium transition-colors">
+            ＋ 新規顧客
+          </button>
+        </div>
+
+        <!-- 顧客カードリスト -->
+        <div id="customer-list" class="scroll-list p-2"></div>
+      </aside>
+
+      <!-- 右ペイン: モード切替 -->
+      <section class="flex-1 overflow-y-auto">
+
+        <!-- モード1: 空状態 -->
+        <div id="pane-empty" class="h-full flex items-center justify-center">
+          <div class="text-center text-gray-400">
+            <div class="text-5xl mb-4">👈</div>
+            <p class="text-base">左から顧客を選んでください</p>
+          </div>
+        </div>
+
+        <!-- モード2: 顧客詳細 -->
+        <div id="pane-customer-detail" class="hidden p-6 max-w-2xl">
+          <!-- ヘッダ行 -->
+          <div class="flex items-start justify-between mb-6">
+            <h2 id="detail-company" class="text-2xl font-bold text-gray-900"></h2>
+            <div class="flex gap-2 shrink-0 ml-4">
+              <button id="btn-edit" class="btn-secondary rounded-lg px-4 py-2 text-sm font-medium transition-colors">編集</button>
+              <button id="btn-delete" class="btn-danger rounded-lg px-4 py-2 text-sm font-medium transition-colors">削除</button>
+            </div>
+          </div>
+
+          <!-- 連絡先ブロック -->
+          <div class="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
+            <div class="flex gap-2">
+              <span class="text-xs text-gray-500 w-16 shrink-0 pt-0.5">担当者</span>
+              <span id="detail-contact" class="text-sm text-gray-900 font-medium"></span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-xs text-gray-500 w-16 shrink-0 pt-0.5">役職</span>
+              <span id="detail-title" class="text-sm text-gray-700"></span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-xs text-gray-500 w-16 shrink-0 pt-0.5">メール</span>
+              <a id="detail-email" href="#" class="text-sm text-blue-600 hover:underline"></a>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-xs text-gray-500 w-16 shrink-0 pt-0.5">電話</span>
+              <span id="detail-phone" class="text-sm text-gray-700"></span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-xs text-gray-500 w-16 shrink-0 pt-0.5">メモ</span>
+              <span id="detail-memo" class="text-sm text-gray-700 whitespace-pre-wrap"></span>
+            </div>
+          </div>
+
+          <!-- 商談一覧ブロック -->
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-semibold text-gray-700">商談</h3>
+            <button id="btn-add-deal" class="btn-primary rounded-lg px-3 py-1.5 text-xs font-medium transition-colors">
+              ＋ 商談を追加
+            </button>
+          </div>
+          <div id="deal-list" class="space-y-2"></div>
+        </div>
+
+        <!-- モード3: 顧客フォーム（新規・編集） -->
+        <div id="pane-customer-form" class="hidden p-6 max-w-xl">
+          <div class="flex items-center gap-3 mb-6">
+            <button id="btn-cancel-customer" class="btn-secondary rounded-lg px-3 py-1.5 text-sm transition-colors">キャンセル</button>
+            <h2 id="customer-form-title" class="text-xl font-bold text-gray-900"></h2>
+          </div>
+
+          <form id="form-customer" class="space-y-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">会社名 <span class="text-red-500">*</span></label>
+              <input id="input-company" type="text" required
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">担当者名 <span class="text-red-500">*</span></label>
+              <input id="input-contact" type="text" required
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">役職</label>
+              <input id="input-title" type="text"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">メール</label>
+              <input id="input-email" type="email"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">電話</label>
+              <input id="input-phone" type="tel"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">メモ</label>
+              <textarea id="input-memo" rows="4"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 resize-none"></textarea>
+            </div>
+            <div class="pt-2">
+              <button id="btn-save-customer" type="submit"
+                class="btn-primary rounded-lg px-6 py-2 text-sm font-medium transition-colors">
+                保存
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- モード4: 商談フォーム（新規・編集） -->
+        <div id="pane-deal-form" class="hidden p-6 max-w-xl">
+          <div class="flex items-center gap-3 mb-1">
+            <button id="btn-cancel-deal" class="btn-secondary rounded-lg px-3 py-1.5 text-sm transition-colors">キャンセル</button>
+            <h2 id="deal-form-title" class="text-xl font-bold text-gray-900"></h2>
+          </div>
+          <p id="deal-form-company" class="text-xs text-gray-500 mb-6 ml-[76px]"></p>
+
+          <form id="form-deal" class="space-y-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">タイトル <span class="text-red-500">*</span></label>
+              <input id="input-deal-title" type="text" required
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">金額（円）</label>
+              <input id="input-deal-amount" type="number" min="0"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">ステータス</label>
+              <select id="input-deal-status"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 bg-white">
+                <option value="lead">見込み</option>
+                <option value="proposal">提案</option>
+                <option value="won">成約</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">フォローアップメモ</label>
+              <textarea id="input-deal-memo" rows="4"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 resize-none"></textarea>
+            </div>
+            <div class="flex gap-3 pt-2">
+              <button id="btn-save-deal" type="submit"
+                class="btn-primary rounded-lg px-6 py-2 text-sm font-medium transition-colors">
+                保存
+              </button>
+              <button id="btn-delete-deal" type="button"
+                class="btn-danger hidden rounded-lg px-6 py-2 text-sm font-medium transition-colors">
+                削除
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- ビュー②: パイプライン（カンバン3列） -->
+    <div id="view-pipeline" class="hidden h-full p-6">
+      <div class="flex gap-4 h-full">
+        <!-- 見込み列 -->
+        <div class="flex-1 flex flex-col">
+          <div class="flex items-center gap-2 mb-3 px-1">
+            <span class="text-sm font-semibold text-gray-600">見込み</span>
+            <span id="count-lead" class="text-xs bg-gray-100 text-gray-500 rounded-full px-2 py-0.5"></span>
+          </div>
+          <div id="kanban-lead" class="space-y-3 overflow-y-auto flex-1 pr-1"></div>
+        </div>
+
+        <!-- 提案列 -->
+        <div class="flex-1 flex flex-col">
+          <div class="flex items-center gap-2 mb-3 px-1">
+            <span class="text-sm font-semibold" style="color:#c15f3c">提案</span>
+            <span id="count-proposal" class="text-xs rounded-full px-2 py-0.5" style="background:#fdf3ef;color:#c15f3c"></span>
+          </div>
+          <div id="kanban-proposal" class="space-y-3 overflow-y-auto flex-1 pr-1"></div>
+        </div>
+
+        <!-- 成約列 -->
+        <div class="flex-1 flex flex-col">
+          <div class="flex items-center gap-2 mb-3 px-1">
+            <span class="text-sm font-semibold text-green-700">成約</span>
+            <span id="count-won" class="text-xs bg-green-50 text-green-700 rounded-full px-2 py-0.5"></span>
+          </div>
+          <div id="kanban-won" class="space-y-3 overflow-y-auto flex-1 pr-1"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

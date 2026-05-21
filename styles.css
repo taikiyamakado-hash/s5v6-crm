@@ -1,0 +1,83 @@
+/* Tailwindで賄えない補助スタイルのみ記述 */
+
+body {
+  font-family: "游ゴシック", "Yu Gothic", sans-serif;
+}
+
+/* 選択中の顧客カード: 左オレンジライン */
+.customer-card-selected {
+  border-left: 4px solid #c15f3c;
+  background-color: #fdf3ef;
+}
+
+/* 未選択カード */
+.customer-card {
+  border-left: 4px solid transparent;
+}
+
+/* カンバンの商談カード左アクセントライン */
+.deal-card-lead {
+  border-left: 3px solid #9ca3af;
+}
+
+.deal-card-proposal {
+  border-left: 3px solid #c15f3c;
+}
+
+.deal-card-won {
+  border-left: 3px solid #16a34a;
+}
+
+/* ステータスバッジ */
+.badge-lead {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.badge-proposal {
+  background-color: #fdf3ef;
+  color: #c15f3c;
+}
+
+.badge-won {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+/* スクロール可能なリスト */
+.scroll-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* プライマリボタン */
+.btn-primary {
+  background-color: #c15f3c;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #a84f30;
+}
+
+/* セカンダリボタン */
+.btn-secondary {
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+/* 削除ボタン */
+.btn-danger {
+  background-color: #ffffff;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.btn-danger:hover {
+  background-color: #fef2f2;
+}
