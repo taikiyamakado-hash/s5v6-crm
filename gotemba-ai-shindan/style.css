@@ -1,0 +1,509 @@
+/* ========================================
+   御殿場AIムダ仕事発見器 - スタイルシート
+   ========================================
+   カラー変数を変えるだけで配色を変えられます。
+   --color-primary: メインの緑
+   --color-accent:  アクセントのオレンジ
+   ======================================== */
+
+:root {
+  --color-primary: #2a9d5c;      /* 緑（ボタン・強調） */
+  --color-primary-dark: #1f7a46; /* 緑（ホバー時） */
+  --color-accent: #e07b2a;       /* オレンジ（サブアクセント） */
+  --color-bg: #f8faf9;           /* 背景（ほぼ白） */
+  --color-card: #ffffff;         /* カード背景 */
+  --color-text: #2c3e50;         /* 本文テキスト */
+  --color-muted: #6c7a89;        /* サブテキスト */
+  --color-border: #dde6e0;       /* ボーダー */
+  --color-highlight: #edf8f2;    /* ハイライト背景 */
+  --radius: 12px;                /* 角丸 */
+  --shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  --max-width: 640px;            /* コンテンツ最大幅 */
+}
+
+/* ----------------------------------------
+   リセット・ベース
+---------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+               "Noto Sans JP", "Meiryo", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* ページ遷移：activeクラスがついているsectionだけ表示 */
+.page {
+  display: none;
+  min-height: 100vh;
+  padding: 32px 16px 64px;
+}
+.page.active {
+  display: block;
+}
+
+/* 中央寄せコンテナ */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* ----------------------------------------
+   ボタン共通
+---------------------------------------- */
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 50px;        /* 丸みのあるボタン */
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* メインボタン（緑） */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(42, 157, 92, 0.3);
+}
+
+/* アウトラインボタン */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-outline:hover,
+.btn-outline:active {
+  background-color: var(--color-highlight);
+}
+
+/* 大きめボタン */
+.btn-large {
+  padding: 18px 40px;
+  font-size: 18px;
+  width: 100%;          /* スマホでは全幅 */
+  display: block;
+}
+
+/* ----------------------------------------
+   トップページ（ヒーロー）
+---------------------------------------- */
+.hero {
+  text-align: center;
+  padding: 40px 0 32px;
+}
+
+/* 「御殿場」バッジ + サービス名 */
+.logo-area {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo-badge {
+  background-color: var(--color-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.service-name {
+  font-size: clamp(22px, 6vw, 30px);
+  font-weight: 900;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
+}
+
+/* キャッチコピー */
+.catchcopy {
+  font-size: clamp(18px, 4.5vw, 24px);
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+/* 説明文 */
+.description {
+  font-size: 15px;
+  color: var(--color-muted);
+  margin-bottom: 36px;
+  line-height: 1.8;
+}
+
+/* 所要時間メモ */
+.time-note {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ----------------------------------------
+   診断フォーム
+---------------------------------------- */
+.form-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.form-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+/* プログレスバー */
+.progress-wrap {
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  background-color: var(--color-border);
+  border-radius: 50px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-fill {
+  background-color: var(--color-primary);
+  height: 100%;
+  border-radius: 50px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.progress-text {
+  font-size: 13px;
+  color: var(--color-muted);
+  text-align: right;
+}
+
+/* 質問ブロック */
+.question-block {
+  background-color: var(--color-card);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.question-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.question-text {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.question-hint {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 20px;
+}
+
+/* 選択肢リスト */
+.options-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-item {
+  position: relative;
+}
+
+/* ラジオ・チェックボックスを隠してラベルをカスタムスタイルに */
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.15s ease;
+  background-color: #fff;
+  user-select: none;
+}
+
+/* チェックマーク用の丸 */
+.option-label::before {
+  content: '';
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;    /* ラジオボタン用の丸 */
+  transition: all 0.15s ease;
+}
+
+/* チェックボックス（複数選択）は四角 */
+.option-item.checkbox .option-label::before {
+  border-radius: 5px;
+}
+
+/* 選択済みスタイル */
+.option-item input:checked + .option-label {
+  border-color: var(--color-primary);
+  background-color: var(--color-highlight);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.option-item input:checked + .option-label::before {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  /* チェックマーク（白い✓） */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+}
+
+.option-label:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-highlight);
+}
+
+/* ナビゲーションボタン */
+.form-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.form-nav .btn {
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+}
+
+/* 「戻る」ボタンは非表示制御 */
+#back-btn {
+  display: none;
+}
+
+/* ----------------------------------------
+   診断結果ページ
+---------------------------------------- */
+.result-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 32px 16px 24px;
+  background: linear-gradient(135deg, var(--color-primary), #1f7a46);
+  border-radius: var(--radius);
+  color: #fff;
+}
+
+.result-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+.result-type-name {
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+/* 結果カード */
+.result-card {
+  background-color: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 20px;
+  margin-bottom: 20px;
+}
+
+.result-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.result-section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--color-text);
+}
+
+/* AIでできることリスト */
+.ai-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-list li::before {
+  content: "✓ ";
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* 最初の一手ハイライト */
+.highlight-box {
+  background-color: var(--color-highlight);
+  border-radius: 10px;
+  padding: 16px !important;
+  border: none !important;
+  margin-bottom: 24px !important;
+}
+
+/* メタ情報（削減時間・難易度） */
+.result-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  flex: 1;
+  min-width: 140px;
+  background-color: var(--color-bg);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.meta-label {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.meta-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+/* 相談誘導カード */
+.cta-card {
+  background: linear-gradient(135deg, #fff8f0, #fff3e8);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cta-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+.cta-text {
+  font-size: 14px;
+  color: var(--color-muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.cta-card .btn-primary {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.cta-card .btn-primary:hover {
+  background-color: #c4672a;
+  border-color: #c4672a;
+}
+
+/* やり直しエリア */
+.retry-area {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.retry-area .btn {
+  font-size: 14px;
+  padding: 12px 28px;
+}
+
+/* ----------------------------------------
+   レスポンシブ（PC：少し余裕を持たせる）
+---------------------------------------- */
+@media (min-width: 600px) {
+  .page {
+    padding: 48px 24px 80px;
+  }
+
+  .btn-large {
+    width: auto;
+    display: inline-block;
+    min-width: 260px;
+  }
+
+  .hero {
+    padding: 60px 0 48px;
+  }
+
+  .catchcopy {
+    font-size: 26px;
+  }
+
+  .form-nav .btn {
+    flex: none;
+    min-width: 120px;
+    padding: 14px 28px;
+  }
+}

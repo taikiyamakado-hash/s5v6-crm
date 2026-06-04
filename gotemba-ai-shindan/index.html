@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>御殿場AIムダ仕事発見器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================
+       トップページ
+  ======================================== -->
+  <section id="top-page" class="page active">
+    <div class="container">
+      <div class="hero">
+
+        <!-- サービス名 -->
+        <div class="logo-area">
+          <span class="logo-badge">御殿場</span>
+          <h1 class="service-name">AIムダ仕事発見器</h1>
+        </div>
+
+        <!-- キャッチコピー -->
+        <p class="catchcopy">
+          その作業、人間がやらなくていいかもしれません。
+        </p>
+
+        <!-- 説明文 -->
+        <p class="description">
+          御殿場・小山・裾野エリアの小さなお店・会社向けに、<br>
+          AIで減らせる"面倒な仕事"を<strong>3分で診断</strong>します。<br><br>
+          問い合わせ返信、SNS投稿、口コミ返信、書類作成、スタッフ教育など、<br>
+          日々の業務の中にある効率化のヒントを見つけます。
+        </p>
+
+        <!-- 診断スタートボタン -->
+        <button class="btn btn-primary btn-large" onclick="startDiagnosis()">
+          無料で診断する →
+        </button>
+        <p class="time-note">⏱ 所要時間：約3分 ／ 全7問</p>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       診断フォームページ
+  ======================================== -->
+  <section id="form-page" class="page">
+    <div class="container">
+
+      <!-- ヘッダー -->
+      <div class="form-header">
+        <h2 class="form-title">AIムダ仕事診断</h2>
+
+        <!-- プログレスバー -->
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <p class="progress-text" id="progress-text">質問 1 / 7</p>
+        </div>
+      </div>
+
+      <!-- 質問エリア（JavaScriptで動的生成） -->
+      <div id="question-container"></div>
+
+      <!-- ナビゲーションボタン -->
+      <div class="form-nav">
+        <button class="btn btn-outline" id="back-btn" onclick="goBack()">← 戻る</button>
+        <button class="btn btn-primary" id="next-btn" onclick="goNext()">次へ →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       診断結果ページ
+  ======================================== -->
+  <section id="result-page" class="page">
+    <div class="container">
+
+      <!-- 結果タイトル -->
+      <div class="result-header">
+        <p class="result-label">あなたの診断結果</p>
+        <h2 class="result-type-name" id="result-type-name"></h2>
+      </div>
+
+      <!-- 結果カード -->
+      <div class="result-card">
+
+        <!-- あなたの状況 -->
+        <div class="result-section">
+          <h3 class="section-title">📋 あなたの状況</h3>
+          <p id="result-description"></p>
+        </div>
+
+        <!-- AIでできること -->
+        <div class="result-section">
+          <h3 class="section-title">🤖 AIでできること</h3>
+          <ul id="result-ai-things" class="ai-list"></ul>
+        </div>
+
+        <!-- 最初の一手 -->
+        <div class="result-section highlight-box">
+          <h3 class="section-title">👣 最初の一手</h3>
+          <p id="result-first-step"></p>
+        </div>
+
+        <!-- 削減時間 / 難易度 -->
+        <div class="result-meta">
+          <div class="meta-item">
+            <span class="meta-label">⏱ 想定削減時間</span>
+            <span class="meta-value" id="result-time"></span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">🎯 導入難易度</span>
+            <span class="meta-value" id="result-difficulty"></span>
+          </div>
+        </div>
+
+      </div><!-- /.result-card -->
+
+      <!-- 相談誘導カード -->
+      <div class="cta-card">
+        <h3 class="cta-title">✉️ 無料で相談できます</h3>
+        <p class="cta-text">
+          診断結果をもとに、あなたのお店・会社向けに<br>
+          「最初にAI化すべき1業務」を無料で整理できます。<br>
+          まずはお気軽にご相談ください。
+        </p>
+        <!-- ▼ 問い合わせ先URLはここを変更してください -->
+        <a id="contact-btn" href="https://example.com/contact" target="_blank" class="btn btn-primary btn-large">
+          無料で相談する →
+        </a>
+      </div>
+
+      <!-- やり直しボタン -->
+      <div class="retry-area">
+        <button class="btn btn-outline" onclick="retryDiagnosis()">もう一度診断する</button>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
